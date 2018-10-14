@@ -70,7 +70,12 @@ def convert(operator,sample,amplitudes):
 
     return total
 
-def operatorCheck(operator,listofMs,numQubits,textBox = False):
+def operatorCheck(operator,
+                  listofMs,
+                  amplitudeFilename,
+                  samplesFilename,
+                  observablesFilename,
+                  textBox = False):
     '''
     Compares average value of observable from samples with expected value
     from tensor contractions. Creates a plot of error versus number of samples.
@@ -82,30 +87,39 @@ def operatorCheck(operator,listofMs,numQubits,textBox = False):
     :type operator: str
     :param listofMs: List of number of samples to try.
     :type listofMs: listof int
-    :param numQubits: Number of qubits comprising the quantum system.
-    :type numQubits: int
+    :param amplitudeFilename: Name of file containing amplitudes
+    :type amplitudeFilename: str
+    :param samplesFilename: Name of file containing samples
+    :type samplesFilename: str
+    :param observablesFilename: Name of file containing exact expectation
+                                values of observables
+    :type observablesFilename: str
+    :param textBox: If True then will display textbox showing exact expectation
+                    value of observable. Default is False.
+    :type textBox: bool
 
     :returns: None
     '''
 
     # Read and store samples from sample file
     samples = []
-    sampleFile = open("Samples/{0}Q/Samples.txt".format(numQubits))
+    sampleFile = open(samplesFilename)
     lines = sampleFile.readlines()
+    numQubits = len(lines[0].split(" ")) - 1
     for line in lines:
         samples.append(line.replace(" ","").strip("\n"))
     sampleFile.close()
 
     # Read and store amplitudes from amplitudes file
     amplitudes = []
-    amplitudeFile = open("Samples/{0}Q/Amplitudes.txt".format(numQubits))
+    amplitudeFile = open(amplitudeFilename)
     lines = amplitudeFile.readlines()
     for line in lines:
         amplitudes.append(float(line.split(" ")[0]))
     amplitudeFile.close()
 
     # Read and store amplitudes from amplitudes file
-    observablesFile = open("Samples/{0}Q/Observables.txt".format(numQubits))
+    observablesFile = open(observablesFilename)
     lines = observablesFile.readlines()
     S2S3 = lines[0].strip("\n").split(" ")[1]
     H = lines[1].strip("\n").split(" ")[1]
@@ -128,7 +142,6 @@ def operatorCheck(operator,listofMs,numQubits,textBox = False):
             total += 0.5 * convert("S+S-",samples[i],amplitudes)
             total += 0.5 * convert("S-S+",samples[i],amplitudes)
         if i in listofMs:
-            print(total/(i+1))
             values.append(abs(expectedValue - total/(i+1))/abs(expectedValue))
 
     fig, ax = plt.subplots()
@@ -148,4 +161,4 @@ def operatorCheck(operator,listofMs,numQubits,textBox = False):
                  verticalalignment = "top",bbox = props)
     plt.ticklabel_format(style = "sci", axis = "y", scilimits = (0,0))
     plt.tight_layout()
-    plt.savefig("OperatorChecks/{0}/{1}Q".format(operator,numQubits),dpi = 200)
+    plt.savefig("{0}".format(operator),dpi = 200)
