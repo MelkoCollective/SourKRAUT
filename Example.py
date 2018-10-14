@@ -1,3 +1,5 @@
-from RUN import runSampling
+import sourkraut.frequency as sfreq
+import sourkraut.operator as soper
+import sourkraut.sampler as sampler
 
-runSampling(20000,10,True)
+sampler.runSampling(20000,5,True)
