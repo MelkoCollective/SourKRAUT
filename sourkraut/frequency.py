@@ -2,20 +2,22 @@ import numpy as np
 import matplotlib.pyplot as plt
 import itertools
 
-def countCheck(numQubits):
+def freqCheck(amplitudeFilename,samplesFilename):
     '''
     Compares expected and actual frequencies of each qubit configuration
     based on amplitude and sample files obtained from iTensor script.
 
-    :param numQubits: Number of qubits comprising the quantum system.
-    :type numQubits: int
+    :param amplitudeFilename: Name of file containing amplitudes
+    :type amplitudeFilename: str
+    :param samplesFilename: Name of file containing samples
+    :type samplesFilename: str
 
     :returns: None
     '''
 
     # Read and store amplitudes from amplitudes file
     amplitudes = []
-    amplitudeFile = open("Samples/{0}Q/Amplitudes.txt".format(numQubits))
+    amplitudeFile = open(amplitudeFilename)
     lines = amplitudeFile.readlines()
     for line in lines:
         amplitudes.append(float(line.split(" ")[0]))
@@ -23,7 +25,7 @@ def countCheck(numQubits):
 
     # Read and store samples from sample file
     samples = []
-    sampleFile = open("Samples/{0}Q/Samples.txt".format(numQubits))
+    sampleFile = open(samplesFilename)
     lines = sampleFile.readlines()
     for line in lines:
         samples.append(line.replace(" ","").strip("\n"))
@@ -64,4 +66,4 @@ def countCheck(numQubits):
     plt.xlabel("Various States")
     plt.ylabel("Counts")
     plt.title("Sampling from 1D Heisenberg Model for N = {0}".format(numOfQubits))
-    plt.savefig("Histograms/Histogram{0}Q".format(numOfQubits),dpi = 200)
+    plt.savefig("Histogram".format(numOfQubits),dpi = 200)
