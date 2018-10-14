@@ -84,3 +84,4 @@ def runSampling(numSamples,N,storeAmplitudes):
     subprocess.call(["chmod","a+x","Heisenberg"])
     subprocess.call(["make"])
     subprocess.call(["./Heisenberg"])
+    os.chdir("../..")
