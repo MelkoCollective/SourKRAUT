@@ -90,6 +90,9 @@ int main()
   // Specify number of sites
   const int N = 4;
 
+  // Specify whether or not to store amplitude coefficients
+  bool storeAmplitudes = true;
+
   ////////////// PARAMETERS //////////////
 
   // Define Hilbert space of N spin-half sites
@@ -155,37 +158,39 @@ int main()
     }
   }
 
-  // Contract each of the tensors in order to obtain a single
-  // tensor containing the amplitude coefficients. At some
-  // point this will too computationally intensive to complete.
-  // Thus we will never a more clever method to determining
-  // the fidelity.
-  ITensor R = psi.A(1);
-  for (int i = 2;i < N + 1;i++) {
-    R *= psi.A(i);
+  if (storeAmplitudes == true) {
+    // Contract each of the tensors in order to obtain a single
+    // tensor containing the amplitude coefficients. At some
+    // point this will too computationally intensive to complete.
+    // Thus we will never a more clever method to determining
+    // the fidelity.
+    ITensor R = psi.A(1);
+    for (int i = 2;i < N + 1;i++) {
+      R *= psi.A(i);
+    }
+
+    // Normalize the amplitude coefficients
+    auto nrm = norm(R);
+    R /= nrm;
+
+    // The following code will store all possible qubit configurations
+    // These will be used to reference the amplitudes in the desired order
+    int configs = pow(2,N);
+    float amplitude = 0;
+    float amplitudes[configs] = {};
+
+    for(int i = 0;i < configs;i++) {
+      amplitude = R.real(spinIndices[3](bitset<N>(i)[0]+1),
+                         spinIndices[2](bitset<N>(i)[1]+1),
+                         spinIndices[1](bitset<N>(i)[2]+1),
+                         spinIndices[0](bitset<N>(i)[3]+1));
+      amplitudes[i] = amplitude;
+    }
+
+    // Store the amplitude coefficients in a file
+    // This will be used to measure fidelity
+    writeAmplitudes(amplitudes,configs);
   }
-
-  // Normalize the amplitude coefficients
-  auto nrm = norm(R);
-  R /= nrm;
-
-  // The following code will store all possible qubit configurations
-  // These will be used to reference the amplitudes in the desired order
-  int configs = pow(2,N);
-  float amplitude = 0;
-  float amplitudes[configs] = {};
-
-  for(int i = 0;i < configs;i++) {
-    amplitude = R.real(spinIndices[3](bitset<N>(i)[0]+1),
-                       spinIndices[2](bitset<N>(i)[1]+1),
-                       spinIndices[1](bitset<N>(i)[2]+1),
-                       spinIndices[0](bitset<N>(i)[3]+1));
-    amplitudes[i] = amplitude;
-  }
-
-  // Store the amplitude coefficients in a file
-  // This will be used to measure fidelity
-  writeAmplitudes(amplitudes,configs);
 
   // Initiate random seed generator for measuring qubits
   srand(time(NULL));
