@@ -40,6 +40,11 @@ def runSampling(numSamples,N,storeAmplitudes,showMakeOutput = False,showCCOutput
     :returns: None
     '''
 
+    if N > 20:
+        print ("WARNING: Storing the amplitudes for a system size of 20" +
+               "or greater may require excessive memory. To avoid storing" +
+               "the amplitudes, set storeAmplitudes to False.")
+
     # Store the lines from the template c++ file
     template = open("sourkraut/CppCode/Template/Heisenberg.cc")
     templateLines = template.readlines()
