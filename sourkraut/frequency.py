@@ -39,6 +39,11 @@ def freqCheck(amplitudeFilename,samplesFilename,plotHistogram):
     numOfQubits = len(samples[0])
     allCombos = list(itertools.product(["0","1"],repeat = numOfQubits))
 
+    if numOfQubits > 9:
+        print ("WARNING: Plotting a histogram for a system size of 10" +
+               "or greater may greatly increase runtime. To avoid plotting" +
+               "the histogram, set plotHistogram to False.")
+
     # Count the number of occurrences of each configuration from samples
     counter = {}
     for combo in allCombos:
