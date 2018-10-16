@@ -127,7 +127,7 @@ def operatorCheck(operator,
 
     if operator == "S2S3":
         expectedValue = float(S2S3)
-        opStr = r"S_{2}S_{3}"
+        opStr = r"S_{2}^{z}S_{3}^{z}"
     elif operator == "H":
         expectedValue = float(H)
         opStr = "H"
