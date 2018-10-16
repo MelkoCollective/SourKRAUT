@@ -17,7 +17,7 @@ def filterSpace(string):
     else:
         return True
 
-def runSampling(numSamples,N,storeAmplitudes):
+def runSampling(numSamples,N,storeAmplitudes,showMakeOutput = False,showCCOutput = True):
     '''
     Makes and runs a c++ file for generating random samples
     of a quantum system. User also has the options of storing
@@ -30,6 +30,12 @@ def runSampling(numSamples,N,storeAmplitudes):
     :type N: int
     :param storeAmplitudes: Specify whether or not to store amplitudes.
     :type storeAmplitudes: bool
+    :param showMakeOutput: Show output from running makefile.
+                           Default is False.
+    :type showMakeOutput: bool
+    :param showCCOutput: Show output from running C++ ITensor file.
+                         Default is True.
+    :type showCCOutput: bool
 
     :returns: None
     '''
@@ -82,6 +88,14 @@ def runSampling(numSamples,N,storeAmplitudes):
     newFile.close()
     os.chdir("sourkraut/CppCode")
     subprocess.call(["chmod","a+x","Heisenberg"])
-    subprocess.call(["make"])
-    subprocess.call(["./Heisenberg"])
+    if showMakeOutput:
+        subprocess.call(["make"])
+    else:
+        FNULL = open(os.devnull,"w")
+        subprocess.call(["make"],stdout=FNULL,stderr=subprocess.STDOUT)
+    if showCCOutput:
+        subprocess.call(["./Heisenberg"])
+    else:
+        FNULL = open(os.devnull,"w")
+        subprocess.call(["./Heisenberg"],stdout=FNULL,stderr=subprocess.STDOUT)
     os.chdir("../..")
