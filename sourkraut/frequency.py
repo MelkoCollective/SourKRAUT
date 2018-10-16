@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import itertools
 
-def freqCheck(amplitudeFilename,samplesFilename):
+def freqCheck(amplitudeFilename,samplesFilename,plotHistogram):
     '''
     Compares expected and actual frequencies of each qubit configuration
     based on amplitude and sample files obtained from iTensor script.
@@ -11,6 +11,10 @@ def freqCheck(amplitudeFilename,samplesFilename):
     :type amplitudeFilename: str
     :param samplesFilename: Name of file containing samples
     :type samplesFilename: str
+    :param plotHistogram: Specify whether or not to plot a histogram
+                          comparing the expected and actual frequencies.
+                          Recommended to be False if N > 9.
+    :type plotHistogram: bool
 
     :returns: None
     '''
@@ -59,11 +63,12 @@ def freqCheck(amplitudeFilename,samplesFilename):
         actualFreq.append(counter[config])
         expectedFreq.append(expectedCount)
 
-    plt.bar(configs,actualFreq,label = "Actual")
-    plt.bar(configs,expectedFreq,facecolor = "None",label = "Expected",edgecolor = "black",linewidth = 1.5)
-    plt.legend(loc = "best")
-    plt.xticks([])
-    plt.xlabel("Various States")
-    plt.ylabel("Counts")
-    plt.title("Sampling from 1D Heisenberg Model for N = {0}".format(numOfQubits))
-    plt.savefig("Histogram".format(numOfQubits),dpi = 200)
+    if plotHistogram:
+        plt.bar(configs,actualFreq,label = "Actual")
+        plt.bar(configs,expectedFreq,facecolor = "None",label = "Expected",edgecolor = "black",linewidth = 1.5)
+        plt.legend(loc = "best")
+        plt.xticks([])
+        plt.xlabel("Various States")
+        plt.ylabel("Counts")
+        plt.title("Sampling from 1D Heisenberg Model for N = {0}".format(numOfQubits))
+        plt.savefig("Histogram".format(numOfQubits),dpi = 200)
