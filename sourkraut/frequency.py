@@ -16,7 +16,12 @@ def freqCheck(amplitudeFilename,samplesFilename,plotHistogram):
                           Recommended to be False if N > 9.
     :type plotHistogram: bool
 
-    :returns: None
+    :returns: Dictionary containing possible qubit configurations, list of
+              observed frequencies and list of expected frequencies. All
+              placed in the same order.
+    :rtype: dict["configs"]
+                ["actualFreq"]
+                ["expectedFreq"]
     '''
 
     # Read and store amplitudes from amplitudes file
@@ -77,3 +82,11 @@ def freqCheck(amplitudeFilename,samplesFilename,plotHistogram):
         plt.ylabel("Counts")
         plt.title("Sampling from 1D Heisenberg Model for N = {0}".format(numOfQubits))
         plt.savefig("Histogram".format(numOfQubits),dpi = 200)
+
+    results = {
+        "configs":configs,
+        "actualFreq":actualFreq,
+        "expectedFreq":expectedFreq
+    }
+
+    return results
