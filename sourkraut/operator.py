@@ -98,7 +98,9 @@ def operatorCheck(operator,
                     value of observable. Default is False.
     :type textBox: bool
 
-    :returns: None
+    :returns: Final relative error between expected value of observable
+              and measured value of observable
+    :rtype: float
     '''
 
     # Read and store samples from sample file
@@ -162,3 +164,6 @@ def operatorCheck(operator,
     plt.ticklabel_format(style = "sci", axis = "y", scilimits = (0,0))
     plt.tight_layout()
     plt.savefig("{0}".format(operator),dpi = 200)
+
+    finalError = abs(expectedValue - total/(i+1))/abs(expectedValue)
+    return finalError
