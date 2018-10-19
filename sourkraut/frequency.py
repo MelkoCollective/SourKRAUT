@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import itertools
 
-def freqCheck(amplitudeFilename,samplesFilename,plotHistogram):
+def freqCheck(amplitudeFilename,samplesFilename,plotHistogram,showOutput):
     '''
     Compares expected and actual frequencies of each qubit configuration
     based on amplitude and sample files obtained from iTensor script.
@@ -15,6 +15,8 @@ def freqCheck(amplitudeFilename,samplesFilename,plotHistogram):
                           comparing the expected and actual frequencies.
                           Recommended to be False if N > 9.
     :type plotHistogram: bool
+    :param showOutput: Specify whether or not to print output.
+    :type showOutput: bool
 
     :returns: Dictionary containing possible qubit configurations, list of
               observed frequencies and list of expected frequencies. All
@@ -65,9 +67,10 @@ def freqCheck(amplitudeFilename,samplesFilename,plotHistogram):
     for combo in allCombos:
         config = "".join(list(combo))
         expectedCount = int(len(samples) * amplitudes[loopCounter] ** 2)
-        print("Number of occurrences of {0}: {1}".format(config,counter[config]))
-        print("Number of expected occurrences of {0}: {1}".format(config,expectedCount))
-        print("-------------------------------------------")
+        if showOutput:
+            print("Number of occurrences of {0}: {1}".format(config,counter[config]))
+            print("Number of expected occurrences of {0}: {1}".format(config,expectedCount))
+            print("-------------------------------------------")
         loopCounter += 1
         configs.append(config)
         actualFreq.append(counter[config])
