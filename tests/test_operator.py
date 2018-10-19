@@ -95,3 +95,6 @@ obsFile = "data/20Q/Observables.txt"
 def test_operatorCheck_3():
     error = oper.operatorCheck("H",listofMs,ampFile,sampFile,obsFile)
     assert error < 0.0001
+
+if __name__ == "__main__":
+    unittest.main()
