@@ -10,7 +10,7 @@ ampFile = "data/amplitudes.txt"
 sampFile = "data/samples.txt"
 
 # Store results from frequency check
-results = freq.freqCheck(ampFile,sampFile,False)
+results = freq.freqCheck(ampFile,sampFile,False,False)
 
 def test_configs():
     configs = results["configs"]
