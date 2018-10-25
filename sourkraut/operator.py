@@ -140,9 +140,9 @@ def operatorCheck(operator,
         if operator == "S2S3":
             total += convert("S2S3",samples[i],amplitudes)
         elif operator == "H":
-            total += convert("SzSz",samples[i],amplitudes)
-            total += 0.5 * convert("S+S-",samples[i],amplitudes)
-            total += 0.5 * convert("S-S+",samples[i],amplitudes)
+            total += -convert("SzSz",samples[i],amplitudes)
+            total += -0.5 * convert("S+S-",samples[i],amplitudes)
+            total += -0.5 * convert("S-S+",samples[i],amplitudes)
         if i in listofMs:
             values.append(abs(expectedValue - total/(i+1))/abs(expectedValue))
 

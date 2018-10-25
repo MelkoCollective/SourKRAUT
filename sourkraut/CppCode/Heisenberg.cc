@@ -48,21 +48,6 @@ int writeAmplitudes (float loc[],int size)
       myfile << out_string + " 0.0000000000\n";
    }
   myfile.close();
-
-  // Write a secondary file with all positive amplitude coefficients
-  // in case one would like to use fidelity with QuCumber
-  ofstream myfileP;
-  myfileP.open("../../AmplitudesP.txt");
-  for (int i = 0; i < size; ++i) {
-    float amp = abs(loc[i]);
-    std::string out_string;
-    std::stringstream ss;
-    ss << fixed;
-    ss << std::setprecision(10) << amp;
-    out_string = ss.str();
-      myfileP << out_string + " 0.0000000000\n";
-   }
-  myfileP.close();
   return 0;
 }
 
@@ -85,10 +70,10 @@ int main()
   ////////////// PARAMETERS //////////////
 
   // Specify the number of samples to be taken
-  int numSamples = 20000;
+  int numSamples = 10000;
 
   // Specify number of sites
-  const int N = 5;
+  const int N = 4;
 
   // Specify whether or not to store amplitude coefficients
   bool storeAmplitudes = true;
@@ -102,9 +87,9 @@ int main()
   auto ampo = AutoMPO(sites);
   for(int j = 1; j < N; ++j)
       {
-      ampo += 0.5,"S+",j,"S-",j+1;
-      ampo += 0.5,"S-",j,"S+",j+1;
-      ampo +=   1,"Sz",j,"Sz",j+1;
+      ampo += -0.5,"S+",j,"S-",j+1;
+      ampo += -0.5,"S-",j,"S+",j+1;
+      ampo +=   -1,"Sz",j,"Sz",j+1;
       }
   auto H = MPO(ampo);
 
@@ -180,11 +165,10 @@ int main()
     float amplitudes[configs] = {};
 
     for(int i = 0;i < configs;i++) {
-     amplitude = R.real(spinIndices[4](bitset<N>(i)[0]+1),
-                        spinIndices[3](bitset<N>(i)[1]+1),
-                        spinIndices[2](bitset<N>(i)[2]+1),
-                        spinIndices[1](bitset<N>(i)[3]+1),
-                        spinIndices[0](bitset<N>(i)[4]+1));
+     amplitude = R.real(spinIndices[3](bitset<N>(i)[0]+1),
+                        spinIndices[2](bitset<N>(i)[1]+1),
+                        spinIndices[1](bitset<N>(i)[2]+1),
+                        spinIndices[0](bitset<N>(i)[3]+1));
       amplitudes[i] = amplitude;
     }
 
@@ -295,7 +279,6 @@ int main()
         sample += Qstring;
         sample += " ";
     }
-    reverse(sample.begin(), sample.end());
     los[s] = sample;
 
   }
