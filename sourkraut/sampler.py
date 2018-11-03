@@ -45,13 +45,16 @@ def runSampling(numSamples,N,storeAmplitudes,showMakeOutput = False,showCCOutput
                "or greater may require excessive memory. To avoid storing" +
                "the amplitudes, set storeAmplitudes to False.")
 
+    __location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
     # Store the lines from the template c++ file
-    template = open("sourkraut/CppCode/Template/Heisenberg.cc")
+    template = open(os.path.join(__location__, "CppCode/Template/Heisenberg.cc"));
     templateLines = template.readlines()
     template.close()
 
     # Generate a new file with the required adjustments
-    newFile = open("sourkraut/CppCode/Heisenberg.cc","w")
+    newFile = open(os.path.join(__location__, "CppCode/Heisenberg.cc"),"w");
 
     # This loop will rewrite the template lines to the new c++ file
     # while adjusting the lines as necessary based on the specified params
@@ -91,16 +94,20 @@ def runSampling(numSamples,N,storeAmplitudes,showMakeOutput = False,showCCOutput
 
     # Close our file and execute the new c++ script
     newFile.close()
-    os.chdir("sourkraut/CppCode")
-    subprocess.call(["chmod","a+x","Heisenberg"])
+    cppCodePath = os.path.join(__location__, "CppCode")
+    p = subprocess.Popen(["chmod","a+x","Heisenberg"], cwd=cppCodePath)
+    p.wait()
     if showMakeOutput:
-        subprocess.call(["make"])
+        p = subprocess.Popen(["make"], cwd=cppCodePath)
+        p.wait()
     else:
         FNULL = open(os.devnull,"w")
-        subprocess.call(["make"],stdout=FNULL,stderr=subprocess.STDOUT)
+        p = subprocess.Popen(["make"], cwd=cppCodePath, stdout=FNULL,stderr=subprocess.STDOUT)
+        p.wait()
     if showCCOutput:
-        subprocess.call(["./Heisenberg"])
+        p = subprocess.Popen(["./Heisenberg"], cwd=cppCodePath)
+        p.wait()
     else:
         FNULL = open(os.devnull,"w")
-        subprocess.call(["./Heisenberg"],stdout=FNULL,stderr=subprocess.STDOUT)
-    os.chdir("../..")
+        p = subprocess.Popen(["./Heisenberg"], cwd=cppCodePath, stdout=FNULL,stderr=subprocess.STDOUT)
+        p.wait()
