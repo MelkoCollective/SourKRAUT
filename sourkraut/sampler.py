@@ -40,8 +40,8 @@ def runSampling(numSamples,N,storeAmplitudes,showMakeOutput = False,showCCOutput
     :returns: None
     '''
 
-    if N > 20:
-        print ("WARNING: Storing the amplitudes for a system size of 20" +
+    if N > 20 and storeAmplitudes:
+        print ("WARNING: Storing the amplitudes for a system size of 20 " +
                "or greater may require excessive memory. To avoid storing" +
                "the amplitudes, set storeAmplitudes to False.")
 
