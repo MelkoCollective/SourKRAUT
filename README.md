@@ -1,7 +1,7 @@
 ## Sampling Our Kets Randomly and Accurately using Tensor networks
 
 SourKRAUT is a quantum simulator that can be used to generate thousands of samples 
-for various models. This data is generated using unitary tensor network calculations. 
+for various models. This data is generated using tensor network calculations. 
 It can additionally be used to store amplitudes and values of physical observables. 
 Once the data is generated, the results can be verified
 using histograms and relative error plots for various observables.
@@ -20,4 +20,4 @@ git clone git@github.com:MelkoCollective/SourKRAUT.git
 ```
 
 One can follow the Example.py file or the jupyter notebook in the examples
-folder for additional guidance on using SourKRAUT.
+folder for additional guidance on using SourKRAUT to generate samples.
